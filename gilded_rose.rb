@@ -1,6 +1,6 @@
 def update_quality(items)
   items.each do |item|
-    if item.name == "NORMAL ITEM"
+    if item.name == "NORMAL ITEM" || item.name == "Aged Brie"
       update_item item
       next
     end
@@ -58,16 +58,27 @@ def update_quality(items)
 end
 
 def update_item(item)
+  item.sell_in -= 1
   case item.name
   when 'NORMAL ITEM'
-    item.sell_in -= 1
     update_normal_item_quality(item) unless at_min_quality(item)
+  when 'Aged Brie'
+    update_aged_brie_quality(item) unless at_max_quality(item)
   end
+end
+
+def update_aged_brie_quality(item)
+  how_fast = item.sell_in <= 0 && item.quality < 49 ? 2 : 1
+  increase_quality(item, how_fast)
 end
 
 def update_normal_item_quality(item)
   how_fast = item.sell_in > 0 ? 1 : 2
   degrade_quality(item, how_fast)
+end
+
+def increase_quality(item, how_fast = 1)
+  item.quality += 1 * how_fast
 end
 
 def degrade_quality(item, how_fast = 1)
