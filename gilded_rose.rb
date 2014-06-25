@@ -1,5 +1,10 @@
 def update_quality(items)
   items.each do |item|
+    if item.name == "NORMAL ITEM"
+      update_item item
+      next
+    end
+
     if item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert'
       if !at_min_quality(item)
         if item.name != 'Sulfuras, Hand of Ragnaros'
@@ -50,6 +55,23 @@ def update_quality(items)
       end
     end
   end
+end
+
+def update_item(item)
+  case item.name
+  when 'NORMAL ITEM'
+    item.sell_in -= 1
+    update_normal_item_quality(item) unless at_min_quality(item)
+  end
+end
+
+def update_normal_item_quality(item)
+  how_fast = item.sell_in > 0 ? 1 : 2
+  degrade_quality(item, how_fast)
+end
+
+def degrade_quality(item, how_fast = 1)
+  item.quality -= 1 * how_fast
 end
 
 def at_max_quality(item)
