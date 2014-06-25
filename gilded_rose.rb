@@ -1,60 +1,6 @@
 def update_quality(items)
   items.each do |item|
-    refactored_items = ["NORMAL ITEM", "Aged Brie", 'Backstage passes to a TAFKAL80ETC concert', 'Conjured Mana Cake']
-    if refactored_items.include? item.name
-      update_item item
-      next
-    end
-
-    if item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert'
-      if !at_min_quality(item)
-        if item.name != 'Sulfuras, Hand of Ragnaros'
-          item.quality -= 1
-        end
-        if item.name == 'Conjured Mana Cake'
-          item.quality -= 1
-        end
-      end
-    else
-      if !at_max_quality(item)
-        item.quality += 1
-        if item.name == 'Backstage passes to a TAFKAL80ETC concert'
-          if item.sell_in < 11
-            if !at_max_quality(item)
-              item.quality += 1
-            end
-          end
-          if item.sell_in < 6
-            if !at_max_quality(item)
-              item.quality += 1
-            end
-          end
-        end
-      end
-    end
-    if item.name != 'Sulfuras, Hand of Ragnaros'
-      item.sell_in -= 1
-    end
-    if item.sell_in < 0
-      if item.name != "Aged Brie"
-        if item.name != 'Backstage passes to a TAFKAL80ETC concert'
-          if !at_min_quality(item)
-            if item.name != 'Sulfuras, Hand of Ragnaros'
-              item.quality -= 1
-            end
-            if item.name == 'Conjured Mana Cake'
-              item.quality -= 1
-            end
-          end
-        else
-          item.quality = item.quality - item.quality
-        end
-      else
-        if !at_max_quality(item)
-          item.quality += 1
-        end
-      end
-    end
+    update_item item
   end
 end
 
@@ -70,7 +16,7 @@ def update_item(item)
     update_conjured_item_quality(item) unless at_min_quality(item)
   end
 
-  item.sell_in -= 1
+  item.sell_in -= 1 unless item.name == 'Sulfuras, Hand of Ragnaros'
 end
 
 def update_conjured_item_quality(item)
