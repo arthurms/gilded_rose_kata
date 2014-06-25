@@ -10,16 +10,16 @@ def update_quality(items)
         end
       end
     else
-      if item.quality < 50
+      if !at_max_quality(item)
         item.quality += 1
         if item.name == 'Backstage passes to a TAFKAL80ETC concert'
           if item.sell_in < 11
-            if item.quality < 50
+            if !at_max_quality(item)
               item.quality += 1
             end
           end
           if item.sell_in < 6
-            if item.quality < 50
+            if !at_max_quality(item)
               item.quality += 1
             end
           end
@@ -44,11 +44,20 @@ def update_quality(items)
           item.quality = item.quality - item.quality
         end
       else
-        if item.quality < 50
+        if !at_max_quality(item)
           item.quality += 1
         end
       end
     end
+  end
+end
+
+def at_max_quality(item)
+  case item.name
+  when 'Sulfuras, Hand of Ragnaros'
+    item.quality == 80
+  else
+    item.quality == 50
   end
 end
 
