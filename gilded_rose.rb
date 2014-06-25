@@ -5,6 +5,9 @@ def update_quality(items)
         if item.name != 'Sulfuras, Hand of Ragnaros'
           item.quality -= 1
         end
+        if item.name == 'Conjured Mana Cake'
+          item.quality -= 1
+        end
       end
     else
       if item.quality < 50
@@ -31,6 +34,9 @@ def update_quality(items)
         if item.name != 'Backstage passes to a TAFKAL80ETC concert'
           if item.quality > 0
             if item.name != 'Sulfuras, Hand of Ragnaros'
+              item.quality -= 1
+            end
+            if item.name == 'Conjured Mana Cake'
               item.quality -= 1
             end
           end
