@@ -7,13 +7,13 @@ end
 def update_item(item)
   case item.name
   when 'NORMAL ITEM'
-    update_normal_item_quality(item) unless at_min_quality(item)
+    update_normal_item_quality(item)
   when 'Aged Brie'
-    update_aged_brie_quality(item) unless at_max_quality(item)
+    update_aged_brie_quality(item)
   when 'Backstage passes to a TAFKAL80ETC concert'
-    update_backstage_pass_quality(item) unless at_max_quality(item)
+    update_backstage_pass_quality(item)
   when 'Conjured Mana Cake'
-    update_conjured_item_quality(item) unless at_min_quality(item)
+    update_conjured_item_quality(item)
   end
 
   item.sell_in -= 1 unless item.name == 'Sulfuras, Hand of Ragnaros'
@@ -27,7 +27,7 @@ end
 
 def update_backstage_pass_quality(item)
   how_fast = case
-  when item.sell_in > 10 || (item.sell_in > 0 && item.quality == 49)
+  when item.sell_in > 10
     1
   when item.sell_in > 5
     2
@@ -37,7 +37,7 @@ def update_backstage_pass_quality(item)
     item.quality
   end
 
-  if item.sell_in > 0 && !at_max_quality(item)
+  if item.sell_in > 0
     increase_quality(item, how_fast)
   end
 
@@ -47,7 +47,7 @@ def update_backstage_pass_quality(item)
 end
 
 def update_aged_brie_quality(item)
-  how_fast = item.sell_in <= 0 && item.quality < 49 ? 2 : 1
+  how_fast = item.sell_in <= 0 ? 2 : 1
   increase_quality(item, how_fast)
 end
 
@@ -58,28 +58,12 @@ end
 
 def increase_quality(item, how_fast = 1)
   item.quality += 1 * how_fast
+  item.quality = 50 if item.quality > 50
 end
 
 def degrade_quality(item, how_fast = 1)
   item.quality -= 1 * how_fast
-end
-
-def at_max_quality(item)
-  case item.name
-  when 'Sulfuras, Hand of Ragnaros'
-    item.quality == 80
-  else
-    item.quality == 50
-  end
-end
-
-def at_min_quality(item)
-  case item.name
-  when 'Sulfuras, Hand of Ragnaros'
-    item.quality == 80
-  else
-    item.quality == 0
-  end
+  item.quality = 0 if item.quality < 0
 end
 
 # DO NOT CHANGE THINGS BELOW -----------------------------------------
