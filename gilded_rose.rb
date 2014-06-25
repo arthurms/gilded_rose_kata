@@ -58,13 +58,13 @@ def update_quality(items)
 end
 
 def update_item(item)
-  item.sell_in -= 1
   case item.name
   when 'NORMAL ITEM'
     update_normal_item_quality(item) unless at_min_quality(item)
   when 'Aged Brie'
     update_aged_brie_quality(item) unless at_max_quality(item)
   end
+  item.sell_in -= 1
 end
 
 def update_aged_brie_quality(item)
