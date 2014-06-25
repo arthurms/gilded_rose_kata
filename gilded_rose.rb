@@ -1,6 +1,6 @@
 def update_quality(items)
   items.each do |item|
-    refactored_items = ["NORMAL ITEM", "Aged Brie", 'Backstage passes to a TAFKAL80ETC concert']
+    refactored_items = ["NORMAL ITEM", "Aged Brie", 'Backstage passes to a TAFKAL80ETC concert', 'Conjured Mana Cake']
     if refactored_items.include? item.name
       update_item item
       next
@@ -66,9 +66,17 @@ def update_item(item)
     update_aged_brie_quality(item) unless at_max_quality(item)
   when 'Backstage passes to a TAFKAL80ETC concert'
     update_backstage_pass_quality(item) unless at_max_quality(item)
+  when 'Conjured Mana Cake'
+    update_conjured_item_quality(item) unless at_min_quality(item)
   end
 
   item.sell_in -= 1
+end
+
+def update_conjured_item_quality(item)
+  how_fast = 2
+  how_fast = how_fast * 2 if item.sell_in <= 0
+  degrade_quality(item, how_fast)
 end
 
 def update_backstage_pass_quality(item)
