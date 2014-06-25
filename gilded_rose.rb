@@ -20,8 +20,7 @@ def update_item(item)
 end
 
 def update_conjured_item_quality(item)
-  how_fast = 2
-  how_fast = how_fast * 2 if item.sell_in <= 0
+  how_fast = item.sell_in > 0 ? 2 : 4
   degrade_quality(item, how_fast)
 end
 
